@@ -11,6 +11,7 @@ Or you can simply check the DockerFile at `docker/Dockerfile` for our setup.
 To train the first phase wav2vec model of P-TAPT, you'll need the the pretrained wav2vec model checkpoint from Facebook AI Research, which can be obtained [here](https://dl.fbaipublicfiles.com/fairseq/wav2vec/wav2vec_large.pt).
 
 ## Reproduce on IEMOCAP
+Result averaged over 5 runs (only the fine-tuning stage is ran 5 times) with standard deviation:
 ![alt text](https://github.com/b04901014/FT-w2v2-ser/blob/main/result.png?raw=true)
 
 ### Prepare IEMOCAP
@@ -28,7 +29,7 @@ cd ../..
  - TAPT: `bash bin/run_exp_iemocap_baseline.sh Dataset/IEMOCAP/Audio_16k/ Dataset/IEMOCAP/labels_sess/label_{SESSION_TO_TEST}.json OUTPUT_DIR GPU_ID TAPT NUM_EXPS`
  - V-FT: `bash bin/run_exp_iemocap_vft.sh Dataset/IEMOCAP/Audio_16k/ Dataset/IEMOCAP/labels_sess/label_{SESSION_TO_TEST}.json OUTPUT_DIR GPU_ID V-FT NUM_EXPS`
 
-The OUTPUT_DIR should be not exist yet and different for each method, note that it will take a long time since we need to run NUM_EXPS and average. The statistics will be at `OUTPUT_DIR/{METHOD}.log` along with some model checkpoints. Note that it takes a long time and lots of VRAM, if you are concerned at computation, try lower the batch size (but the results may not be as expected).
+The OUTPUT_DIR should not be exist and different for each method, note that it will take a long time since we need to run NUM_EXPS and average. The statistics will be at `OUTPUT_DIR/{METHOD}.log` along with some model checkpoints. Note that it takes a long time and lots of VRAM, if you are concerned at computation, try lower the batch size (but the results may not be as expected).
 
 ## Run the training scripts on your own dataset
 You will need a directory containing all the training wave files sampled at 16kHz, and a json file which contains the emotion label, and the *training/validation/testing* splits in the following format:
