@@ -6,29 +6,14 @@
  - [huggingface transformers](https://huggingface.co) (For Wav2vec2)
  - [faiss](https://github.com/facebookresearch/faiss) (For running clustering)
 
-Faiss can be skipped if you are not running clustering scripts. To have the same setup as ours, check out or run
-`bash setup.sh`.
-
-## Set up dataset and checkpoints
+Faiss can be skipped if you are not running clustering scripts.
+Or you can simply check the DockerFile at `docker/Dockerfile` for our setup.
 To train the first phase wav2vec model, you'll need the the pretrained wav2vec model checkpoint, which can be obtained [here](https://dl.fbaipublicfiles.com/fairseq/wav2vec/wav2vec_large.pt).
-
-You will also need an labeled corpus, with the audio prepared in one directory and a label json file of the following format:
-```
-{
-    audio_filename1: {
-        emotion_category1: intensity,
-        emotion_category2: intensity,
-        ...
-    },
-    ...
-}
-```
-The labels during training is sampled proportional to the intensity of each emotion. For instance, if we have `{angry: 1.0, sad: 1.0}`. The label will be 50% angry and 50% sad. This setting is adopted for generalizing to dataset with multi-labels. 
-
 
 ## Reproduce on IEMOCAP
 
 ### Prepare IEMOCAP
+Obtain [IEMOCAP](https://sail.usc.edu/iemocap/) from USC
 ```
 cd Dataset/IEMOCAP &&
 python make_16k.py IEMOCAP_DIR &&
@@ -44,7 +29,29 @@ cd ../..
 
 The OUTPUT_DIR should be not exist yet and different for each method, note that it will take a long time since we need to run NUM_EXPS and average. The statistics will be at `OUTPUT_DIR/{METHOD}.log`
 
-## P-TAPT
+## P-TAPT: Run the training scripts on your own dataset
+You will need a directory containing all the training wave files sampled at 16kHz, and a json file which contains the emotion label, and the *training/validation/testing* splits in the following format:
+```
+{
+    "Train": {
+        audio_filename1: angry,
+        audio_filename2: sad,
+        ...
+    }
+    "Val": {
+        audio_filename1: neutral,
+        audio_filename2: happy,
+        ...
+    }
+    "Test": {
+        audio_filename1: neutral,
+        audio_filename2: angry,
+        ...
+    }
+}
+```
+ - If the Test has zero elements `"Test: {}"`, no testing will be performed, same rule holds for validation.
+ - Put all your dataset in the following structure, we will be mounting this directory to the container.
 
 ### Train the first phase wav2vec
 ```
@@ -94,7 +101,8 @@ python run_second.py --datadir Audio_Dir \
                      --warmup_step 100 \
                      --saving_path Save_Path \
                      --save_top_k 1 \
-                     --use_bucket_sampler
+                     --use_bucket_sampler \
+                     --dynamic_batch
 ```
 `Label_Path` is the labelfile we get from the first round clustering. To specify our own custom clusters as done in the first phase, use `num_clusters` option similar to the first round clustering (default is `8,64,512,4096`).
 This will write a `w2v2-{epoch:02d}-{valid_loss:.2f}-{valid_acc:.2f}.ckpt` for your best model on validation (if you have validation set), and a `last.ckpt` for the checkpoint of the last epoch.
@@ -109,9 +117,10 @@ python run_downstream_custom_multiple_fold.py --precision 16 \
                                               --datadir Audio_Dir \
                                               --labeldir LABEL_DIR \
                                               --pretrained_path PRETRAINED_PATH \
-                                              --outputfile $3/$5.log
+                                              --outputfile OUTPUT_FILE
 ```
  - `--pretrained_path`: The model path from the output of previous `run_second.py`
  - `--max_epochs`: The epoch to train on the custom dataset, default to 15
  - `--maxseqlen`: maximum input duration in sec, truncate if exceed, default to 12
  - `--labeldir`: A directory contains all the label files to be evaluate (in folds)
+ - `--outputfile`: A log file for outputing the test statistics
