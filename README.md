@@ -11,6 +11,7 @@ Or you can simply check the DockerFile at `docker/Dockerfile` for our setup.
 To train the first phase wav2vec model, you'll need the the pretrained wav2vec model checkpoint, which can be obtained [here](https://dl.fbaipublicfiles.com/fairseq/wav2vec/wav2vec_large.pt).
 
 ## Reproduce on IEMOCAP
+![alt text](https://github.com/b04901014/FT-w2v2-ser/blob/main/result.png?raw=true)
 
 ### Prepare IEMOCAP
 Obtain [IEMOCAP](https://sail.usc.edu/iemocap/) from USC
