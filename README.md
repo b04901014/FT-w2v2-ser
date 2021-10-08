@@ -27,7 +27,7 @@ cd ../..
  - TAPT: `bash bin/run_exp_iemocap_baseline.sh Dataset/IEMOCAP/Audio_16k/ Dataset/IEMOCAP/labels_sess/label_{SESSION_TO_TEST}.json OUTPUT_DIR GPU_ID TAPT NUM_EXPS`
  - V-FT: `bash bin/run_exp_iemocap_vft.sh Dataset/IEMOCAP/Audio_16k/ Dataset/IEMOCAP/labels_sess/label_{SESSION_TO_TEST}.json OUTPUT_DIR GPU_ID V-FT NUM_EXPS`
 
-The OUTPUT_DIR should be not exist yet and different for each method, note that it will take a long time since we need to run NUM_EXPS and average. The statistics will be at `OUTPUT_DIR/{METHOD}.log`
+The OUTPUT_DIR should be not exist yet and different for each method, note that it will take a long time since we need to run NUM_EXPS and average. The statistics will be at `OUTPUT_DIR/{METHOD}.log`. Note that it takes a long time and lots of VRAM, if you are concerned at computation, try lower the batch size (but the results may not be as expected).
 
 ## P-TAPT: Run the training scripts on your own dataset
 You will need a directory containing all the training wave files sampled at 16kHz, and a json file which contains the emotion label, and the *training/validation/testing* splits in the following format:
