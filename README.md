@@ -8,7 +8,7 @@
 
 Faiss can be skipped if you are not running clustering scripts.
 Or you can simply check the DockerFile at `docker/Dockerfile` for our setup.
-To train the first phase wav2vec model, you'll need the the pretrained wav2vec model checkpoint from Facebook AI Research, which can be obtained [here](https://dl.fbaipublicfiles.com/fairseq/wav2vec/wav2vec_large.pt).
+To train the first phase wav2vec model of P-TAPT, you'll need the the pretrained wav2vec model checkpoint from Facebook AI Research, which can be obtained [here](https://dl.fbaipublicfiles.com/fairseq/wav2vec/wav2vec_large.pt).
 
 ## Reproduce on IEMOCAP
 ![alt text](https://github.com/b04901014/FT-w2v2-ser/blob/main/result.png?raw=true)
