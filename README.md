@@ -25,7 +25,7 @@ cd ../..
 ### Run scripts
  - P-TAPT: `bash bin/run_exp_iemocap.sh Dataset/IEMOCAP/Audio_16k/ Dataset/IEMOCAP/labels_sess/label_{SESSION_TO_TEST}.json OUTPUT_DIR GPU_ID P-TAPT NUM_EXPS WAV2VEC_CKPT_PATH`
  - TAPT: `bash bin/run_exp_iemocap_baseline.sh Dataset/IEMOCAP/Audio_16k/ Dataset/IEMOCAP/labels_sess/label_{SESSION_TO_TEST}.json OUTPUT_DIR GPU_ID TAPT NUM_EXPS`
- - V-FT: `bash bin/run_exp_iemocap_vft.sh --precision 16 Dataset/IEMOCAP/Audio_16k/ Dataset/IEMOCAP/labels_sess/label_{SESSION_TO_TEST}.json OUTPUT_DIR GPU_ID V-FT NUM_EXPS`
+ - V-FT: `bash bin/run_exp_iemocap_vft.sh Dataset/IEMOCAP/Audio_16k/ Dataset/IEMOCAP/labels_sess/label_{SESSION_TO_TEST}.json OUTPUT_DIR GPU_ID V-FT NUM_EXPS`
 
 The OUTPUT_DIR should be not exist yet and different for each method, note that it will take a long time since we need to run NUM_EXPS and average. The statistics will be at `OUTPUT_DIR/{METHOD}.log`
 
