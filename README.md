@@ -10,6 +10,8 @@ Faiss can be skipped if you are not running clustering scripts.
 Or you can simply check the DockerFile at `docker/Dockerfile` for our setup.
 To train the first phase wav2vec model of P-TAPT, you'll need the the pretrained wav2vec model checkpoint from Facebook AI Research, which can be obtained [here](https://dl.fbaipublicfiles.com/fairseq/wav2vec/wav2vec_large.pt).
 
+ - Code just switched from hard-coding to passing arguments, not sure every scripts are working as expected.
+
 ## Reproduce on IEMOCAP
 Result averaged over 5 runs (only the fine-tuning stage is ran 5 times) with standard deviation:
 ![alt text](https://github.com/b04901014/FT-w2v2-ser/blob/main/result.png?raw=true)
@@ -71,6 +73,8 @@ python run_downstream_custom_multiple_fold.py --precision 16 \
  - `--outputfile`: A log file for outputing the test statistics
 
 ## TAPT
+
+### Task adaptive training stage
 ```
 python run_baseline_continueFT.py --saving_path SAVING_CKPT_PATH \
                                   --precision 16 \
@@ -84,6 +88,17 @@ python run_baseline_continueFT.py --saving_path SAVING_CKPT_PATH \
                                   --use_bucket_sampler
 ```
 
+### Run the fine-tuning stage
+```
+python run_downstream_custom_multiple_fold.py --precision 16 \
+                                              --num_exps NUM_EXP \
+                                              --datadir Audio_Dir \
+                                              --labeldir LABEL_DIR \
+                                              --saving_path SAVING_CKPT_PATH \
+                                              --pretrained_path PRETRAINED_PATH \
+                                              --outputfile OUTPUT_FILE
+```
+ - `--pretrained_path`: The model path from the output of previous `run_baseline_continueFT.py`
 
 ### Train the first phase wav2vec
 ```
@@ -148,11 +163,8 @@ python run_downstream_custom_multiple_fold.py --precision 16 \
                                               --num_exps NUM_EXP \
                                               --datadir Audio_Dir \
                                               --labeldir LABEL_DIR \
+                                              --saving_path SAVING_CKPT_PATH \
                                               --pretrained_path PRETRAINED_PATH \
                                               --outputfile OUTPUT_FILE
 ```
  - `--pretrained_path`: The model path from the output of previous `run_second.py`
- - `--max_epochs`: The epoch to train on the custom dataset, default to 15
- - `--maxseqlen`: maximum input duration in sec, truncate if exceed, default to 12
- - `--labeldir`: A directory contains all the label files to be evaluate (in folds)
- - `--outputfile`: A log file for outputing the test statistics
