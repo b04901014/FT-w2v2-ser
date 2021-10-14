@@ -1,4 +1,7 @@
 # Fine-tuning Wav2vec 2.0 for SER
+Official implementation for the paper [Exploring Wav2vec 2.0 fine-tuning for improved speech emotion recognition](http://arxiv.org/abs/2110.06309).
+Submitted to ICASSP 2022.
+
 ## Libraries and dependencies
  - [pytorch](https://github.com/pytorch/pytorch)
  - [pytorch-lightning](https://github.com/PyTorchLightning/pytorch-lightning)
