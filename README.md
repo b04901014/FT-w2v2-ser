@@ -137,7 +137,7 @@ python cluster.py --model_path Model_Path \
  -  `--sample_ratio`: Ratio of training data to subsample for training k-means, scale down if you have a large amount of training data
 After getting the primary Wav2vec feature extractor, we are ready to cluster.
 Run the above commands with different `--model_type` you are using.
-Typically the first round will be `wav2vec` and all future rounds are `wav2vec2`.
+Typically the first round will be `wav2vec`, but you can also do iterative pseudo-labeling on `wav2vec2`.
 The default clusters are assigned as `8,64,512,4096`. You can change this by passing a comma delimited string to `--num_clusters`, i.e.`--num_clusters 8,64,512,4096`. Following this example, there will be 5 files written in the `Output_Dir`: Four json label files of each number of cluster, and one json file merging label of all cluster numbers, which is used in the second phase.
 After clustering, you can run the `run_second.py` to train on the new generated labels.
 
