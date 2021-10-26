@@ -14,6 +14,7 @@ class CustomEmoDataset:
         with open(labeldir, 'r') as f:
             self.label = json.load(f) #{split: {wavname: emotion_label}}
         self.emoset = list(set([emo for split in self.label.values() for emo in split.values()]))
+        self.emoset = list(sorted(self.emoset))
         self.nemos = len(self.emoset)
         self.train_dataset = _CustomEmoDataset(datadir, self.label['Train'], self.emoset, 'training')
         if self.label['Val']:
